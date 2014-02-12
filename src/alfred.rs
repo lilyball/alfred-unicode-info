@@ -150,10 +150,11 @@ fn encode_entities<'a>(s: &'a str) -> str::MaybeOwned<'a> {
             '>' => "&gt;",
             '"' => "&quot;",
             '&' => "&amp;",
-            '\0'..'\x1F' => {
-                // control characters can't be decoded by NSXMLParser. I'm unsure if this is
-                // an actual restriction in XML or just libxml2, but it holds even if they're
-                // encoded as entities. Therefore, use the replacement character.
+            '\0'..'\x08' |
+            '\x0B'..'\x0C' |
+            '\x0E'..'\x1F' |
+            '\uFFFE' | '\uFFFF' => {
+                // these are all invalid characters in XML
                 "\uFFFD"
             }
             _ => return None
