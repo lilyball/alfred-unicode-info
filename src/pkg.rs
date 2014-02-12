@@ -29,7 +29,7 @@ fn main() {
 
 /// Handles the given arg
 fn handleArg(text: &str) -> io::IoResult<()> {
-    if text.starts_with("U+") && text.len() > 2 && text.len() < 10 {
+    if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
         let digits = text.slice_from(2);
         match num::from_str_radix::<u32>(digits, 16) {
             None => (),
