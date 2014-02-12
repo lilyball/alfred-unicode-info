@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.tildesoft.alfred.workflow.unicode</string>
+	<key>connections</key>
+	<dict>
+		<key>CD8941C1-C2C1-4455-BA76-CF5DE2B341BA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>FD88D2AC-002E-41A6-93DD-4DA68AEFB6FF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Kevin Ballard</string>
+	<key>description</key>
+	<string>Provides information about unicode characters</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Unicode Info</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>38</integer>
+				<key>keyword</key>
+				<string>char</string>
+				<key>script</key>
+				<string>#!/bin/bash
+./unicode "{query}"</string>
+				<key>title</key>
+				<string>Unicode info for {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>CD8941C1-C2C1-4455-BA76-CF5DE2B341BA</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>FD88D2AC-002E-41A6-93DD-4DA68AEFB6FF</string>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>CD8941C1-C2C1-4455-BA76-CF5DE2B341BA</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>FD88D2AC-002E-41A6-93DD-4DA68AEFB6FF</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
