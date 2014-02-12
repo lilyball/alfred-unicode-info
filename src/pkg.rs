@@ -60,11 +60,12 @@ fn handleCodepoint(code: u32) -> io::IoResult<bool> {
 
     if_ok!(stdout.write_str(XML_HEADER));
 
-    let title = str::from_char(char::from_u32(code).unwrap_or('\uFFFD'));
+    let arg = str::from_char(char::from_u32(code).unwrap_or('\uFFFD'));
+    let title = "\u200B" + arg;
     let subtitle = format!("U+{:04X} {}", code, name);
 
     let item = alfred::Item {
-        arg: Some(title.clone().into_maybe_owned()),
+        arg: Some(arg.into_maybe_owned()),
         subtitle: Some(subtitle.into_maybe_owned()),
         icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
         ..alfred::Item::new(title)
