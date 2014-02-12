@@ -34,7 +34,7 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>38</integer>
+				<integer>102</integer>
 				<key>keyword</key>
 				<string>char</string>
 				<key>script</key>
@@ -51,6 +51,8 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>CD8941C1-C2C1-4455-BA76-CF5DE2B341BA</string>
+			<key>version</key>
+			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -64,6 +66,8 @@
 			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
 			<string>FD88D2AC-002E-41A6-93DD-4DA68AEFB6FF</string>
+			<key>version</key>
+			<integer>0</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -82,6 +86,6 @@
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/kballard/alfred-unicode-info</string>
 </dict>
 </plist>
