@@ -48,6 +48,7 @@ fn handleArg(text: &str) -> io::IoResult<()> {
 /// Returns `Ok(true)` if the codepoint is valid, `Ok(false)` if not.
 fn handleCodepoint(code: u32) -> io::IoResult<bool> {
     let name = match icu::u_charName(code, icu::U_EXTENDED_CHAR_NAME) {
+        Ok(~"") => ~"<unknown>",
         Ok(name) => name,
         Err(e) => {
             let _ = writeln!(&mut io::stderr(), "u_charName error: {}", e);
@@ -81,12 +82,23 @@ fn handleText(text: &str) -> io::IoResult<()> {
 
     if_ok!(stdout.write_str(XML_HEADER));
 
-    let item = alfred::Item {
-        valid: false,
-        subtitle: Some(text.to_owned().into_maybe_owned()),
-        ..alfred::Item::new("handleText")
-    };
-    if_ok!(item.write_xml(&mut stdout, 1));
+    for c in text.chars() {
+        let name = match icu::u_charName(c as u32, icu::U_EXTENDED_CHAR_NAME) {
+            Ok(~"") => ~"<unknown>",
+            Ok(name) => name,
+            Err(e) => {
+                let _ = writeln!(&mut io::stderr(), "u_charName error: {}", e);
+                continue;
+            }
+        };
+        let item = alfred::Item {
+            arg: Some(format!("U+{:04X} {}", c as u32, name).into_maybe_owned()),
+            subtitle: Some(format!("U+{:04X}", c as u32).into_maybe_owned()),
+            icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
+            ..alfred::Item::new(name)
+        };
+        if_ok!(item.write_xml(&mut stdout, 1));
+    }
 
     if_ok!(stdout.write_str(XML_FOOTER));
     if_ok!(stdout.flush());
