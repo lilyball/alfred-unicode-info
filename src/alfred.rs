@@ -1,4 +1,4 @@
-/// Helpers for writing Alfred XML output
+//! Helpers for writing Alfred XML output
 
 use std::io;
 use std::io::BufferedWriter;
@@ -68,77 +68,77 @@ impl Item {
     pub fn write_xml(&self, w: &mut io::Writer, indent: uint) -> io::IoResult<()> {
         fn write_indent(w: &mut io::Writer, indent: uint) -> io::IoResult<()> {
             for _ in range(0, indent) {
-                if_ok!(w.write_str("    "));
+                try!(w.write_str("    "));
             }
             Ok(())
         }
 
         let mut w = BufferedWriter::with_capacity(512, w);
 
-        if_ok!(write_indent(&mut w, indent));
-        if_ok!(w.write_str("<item"));
+        try!(write_indent(&mut w, indent));
+        try!(w.write_str("<item"));
         match self.uid {
             None => (),
             Some(ref uid) => {
-                if_ok!(write!(&mut w, r#" uid="{}""#, encode_entities(uid.as_slice())));
+                try!(write!(&mut w, r#" uid="{}""#, encode_entities(uid.as_slice())));
             }
         }
         match self.arg {
             None => (),
             Some(ref arg) => {
-                if_ok!(write!(&mut w, r#" arg="{}""#, encode_entities(arg.as_slice())));
+                try!(write!(&mut w, r#" arg="{}""#, encode_entities(arg.as_slice())));
             }
         }
         match self.type_ {
             None => (),
             Some(FileItemType) => {
-                if_ok!(w.write_str(r#" type="file""#));
+                try!(w.write_str(r#" type="file""#));
             }
         }
-        if_ok!(write!(&mut w, r#" valid="{}""#, if self.valid { "yes" } else { "no" }));
+        try!(write!(&mut w, r#" valid="{}""#, if self.valid { "yes" } else { "no" }));
         match self.autocomplete {
             None => (),
             Some(ref auto) => {
-                if_ok!(write!(&mut w, r#" autocomplete="{}""#, encode_entities(auto.as_slice())));
+                try!(write!(&mut w, r#" autocomplete="{}""#, encode_entities(auto.as_slice())));
             }
         }
-        if_ok!(w.write_str(">\n"));
+        try!(w.write_str(">\n"));
 
-        if_ok!(write_indent(&mut w, indent+1));
-        if_ok!(write!(&mut w, "<title>{}</title>\n", encode_entities(self.title.as_slice())));
+        try!(write_indent(&mut w, indent+1));
+        try!(write!(&mut w, "<title>{}</title>\n", encode_entities(self.title.as_slice())));
 
         match self.subtitle {
             None => (),
             Some(ref s) => {
-                if_ok!(write_indent(&mut w, indent+1));
-                if_ok!(write!(&mut w, "<subtitle>{}</subtitle>\n", encode_entities(s.as_slice())));
+                try!(write_indent(&mut w, indent+1));
+                try!(write!(&mut w, "<subtitle>{}</subtitle>\n", encode_entities(s.as_slice())));
             }
         }
 
         match self.icon {
             None => (),
             Some(ref icon) => {
-                if_ok!(write_indent(&mut w, indent+1));
+                try!(write_indent(&mut w, indent+1));
                 match *icon {
                     PathIcon(ref s) => {
-                        if_ok!(write!(&mut w, "<icon>{}</icon>\n", encode_entities(s.as_slice())));
+                        try!(write!(&mut w, "<icon>{}</icon>\n", encode_entities(s.as_slice())));
                     }
                     FileIcon(ref s) => {
-                        if_ok!(write!(&mut w, "<icon type=\"fileicon\">{}</icon>\n",
+                        try!(write!(&mut w, "<icon type=\"fileicon\">{}</icon>\n",
                                       encode_entities(s.as_slice())));
                     }
                     FileType(ref s) => {
-                        if_ok!(write!(&mut w, "<icon type=\"filetype\">{}</icon>\n",
+                        try!(write!(&mut w, "<icon type=\"filetype\">{}</icon>\n",
                                       encode_entities(s.as_slice())));
                     }
                 }
             }
         }
 
-        if_ok!(write_indent(&mut w, indent));
-        if_ok!(w.write_str("</item>\n"));
+        try!(write_indent(&mut w, indent));
+        try!(w.write_str("</item>\n"));
 
-        if_ok!(w.flush());
+        try!(w.flush());
         Ok(())
     }
 }

@@ -35,7 +35,7 @@ fn handleArg(text: &str) -> io::IoResult<()> {
             None => (),
             Some(code) => {
                 // this is a U+#### codepoint
-                if if_ok!(handleCodepoint(code)) {
+                if try!(handleCodepoint(code)) {
                     return Ok(());
                 }
             }
@@ -58,7 +58,7 @@ fn handleCodepoint(code: u32) -> io::IoResult<bool> {
 
     let mut stdout = io::stdout();
 
-    if_ok!(stdout.write_str(XML_HEADER));
+    try!(stdout.write_str(XML_HEADER));
 
     let arg = str::from_char(char::from_u32(code).unwrap_or('\uFFFD'));
     let title = "\u200B" + arg;
@@ -70,10 +70,10 @@ fn handleCodepoint(code: u32) -> io::IoResult<bool> {
         icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
         ..alfred::Item::new(title)
     };
-    if_ok!(item.write_xml(&mut stdout, 1));
+    try!(item.write_xml(&mut stdout, 1));
 
-    if_ok!(stdout.write_str(XML_FOOTER));
-    if_ok!(stdout.flush());
+    try!(stdout.write_str(XML_FOOTER));
+    try!(stdout.flush());
     Ok(true)
 }
 
@@ -81,7 +81,7 @@ fn handleCodepoint(code: u32) -> io::IoResult<bool> {
 fn handleText(text: &str) -> io::IoResult<()> {
     let mut stdout = io::stdout();
 
-    if_ok!(stdout.write_str(XML_HEADER));
+    try!(stdout.write_str(XML_HEADER));
 
     for c in text.chars() {
         let name = match icu::u_charName(c as u32, icu::U_EXTENDED_CHAR_NAME) {
@@ -98,11 +98,11 @@ fn handleText(text: &str) -> io::IoResult<()> {
             icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
             ..alfred::Item::new(name)
         };
-        if_ok!(item.write_xml(&mut stdout, 1));
+        try!(item.write_xml(&mut stdout, 1));
     }
 
-    if_ok!(stdout.write_str(XML_FOOTER));
-    if_ok!(stdout.flush());
+    try!(stdout.write_str(XML_FOOTER));
+    try!(stdout.flush());
     Ok(())
 }
 
