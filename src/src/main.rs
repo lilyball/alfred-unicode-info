@@ -97,7 +97,7 @@ fn handle_text(text: &str) -> io::IoResult<()> {
             arg: Some(format!("U+{:04X} {}", c as u32, name).into_maybe_owned()),
             subtitle: Some(format!("U+{:04X}", c as u32).into_maybe_owned()),
             icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
-            ..alfred::Item::new(name.to_string())
+            ..alfred::Item::new(name)
         };
         try!(item.write_xml(&mut stdout, 1));
     }
