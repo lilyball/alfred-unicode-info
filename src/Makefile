@@ -2,10 +2,11 @@
 
 all: ../unicode
 
-../unicode:
-	rustc -O --out-dir .. --dep-info pkg.d pkg.rs
+../unicode: target/release/unicode
+	cp -f $^ $@
 
-include pkg.d
+target/release/unicode:
+	cargo build --release
 
 clean:
-	-rm -f ../unicode
+	cargo clean

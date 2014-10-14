@@ -1,10 +1,9 @@
 //! Relevant libicucore bindings
 
-#[allow(non_camel_case_types)];
-#[allow(dead_code)];
+#![allow(non_snake_case)]
+#![allow(dead_code)]
 
-use std::str;
-use std::libc;
+extern crate libc;
 
 #[repr(C)]
 pub enum UCharNameChoice {
@@ -14,7 +13,7 @@ pub enum UCharNameChoice {
 }
 
 #[repr(C)]
-#[deriving(Eq,Clone,Ord,Show)]
+#[deriving(PartialEq,Eq,Clone,PartialOrd,Ord,Show)]
 pub enum UErrorCode {
    U_USING_FALLBACK_WARNING  = -128,
    //U_ERROR_WARNING_START     = -128,
@@ -209,17 +208,17 @@ pub fn U_FAILURE(err: UErrorCode) -> bool {
 }
 
 /// Converts the indicated codepoint into a string, or returns an error.
-/// If the codepoint doesn't exist, Ok(~"") will be returned.
+/// If the codepoint doesn't exist, Ok("") will be returned.
 ///
 /// The codepoint must be 0 <= code <= 0x10FFFF. If an out-of-range codepoint is passed,
 /// Err(U_INVALID_CHAR_FOUND) will be returned. This is non-standard; libicucore's
 /// u_charName appears to return "" instead.
-pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<~str, UErrorCode> {
+pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErrorCode> {
     if code > 0x10FFFF {
         return Err(U_INVALID_CHAR_FOUND);
     }
 
-    static BUFFER_SIZE: int = 128;
+    const BUFFER_SIZE: uint = 128;
     let mut buffer = [0u8, ..BUFFER_SIZE];
 
     let mut err = U_ZERO_ERROR;
@@ -231,7 +230,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<~str, UError
     if U_SUCCESS(err) {
         assert!(len >= 0);
         let name = buffer.slice_to(len as uint);
-        Ok(str::from_utf8_lossy(name).into_owned())
+        Ok(String::from_utf8_lossy(name).into_string())
     } else {
         assert!(err != U_BUFFER_OVERFLOW_ERROR, "u_charName buffer is too small");
         Err(err)
@@ -239,7 +238,8 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<~str, UError
 }
 
 mod raw {
-    use std::libc;
+    extern crate libc;
+
     use super::{UCharNameChoice, UErrorCode};
 
     pub type UChar32 = libc::int32_t;

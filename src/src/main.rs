@@ -1,18 +1,13 @@
-#[crate_id="com.tildesoft.alfred.workflow.unicode/unicode#0.1"];
-#[crate_type="bin"];
+#![feature(slicing_syntax)]
+
+extern crate alfred;
 
 use std::char;
 use std::os;
 use std::num;
 use std::io;
-use std::str;
 
-#[allow(dead_code)]
 mod icu;
-
-#[allow(dead_code)]
-#[warn(missing_doc)]
-mod alfred;
 
 fn main() {
     let args = os::args();
@@ -23,45 +18,48 @@ fn main() {
         return;
     }
 
-    let text = args[1];
-    let _ = handleArg(text);
+    let text = args[1][];
+    let _ = handle_arg(text);
 }
 
 /// Handles the given arg
-fn handleArg(text: &str) -> io::IoResult<()> {
+fn handle_arg(text: &str) -> io::IoResult<()> {
     if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
         let digits = text.slice_from(2);
         match num::from_str_radix::<u32>(digits, 16) {
             None => (),
             Some(code) => {
                 // this is a U+#### codepoint
-                if try!(handleCodepoint(code)) {
+                if try!(handle_codepoint(code)) {
                     return Ok(());
                 }
             }
         }
     }
-    handleText(text)
+    handle_text(text)
 }
 
 /// Prints out the XML for the given codepoint, if valid.
 /// Returns `Ok(true)` if the codepoint is valid, `Ok(false)` if not.
-fn handleCodepoint(code: u32) -> io::IoResult<bool> {
+fn handle_codepoint(code: u32) -> io::IoResult<bool> {
     let name = match icu::u_charName(code, icu::U_EXTENDED_CHAR_NAME) {
-        Ok(~"") => ~"<unknown>",
-        Ok(name) => name,
+        Ok(s) => s,
         Err(e) => {
-            let _ = writeln!(&mut io::stderr(), "u_charName error: {}", e);
+            let _ = writeln!(io::stderr(), "u_charName error: {}", e);
             return Ok(false);
         }
+    };
+    let name = match name[] {
+        "" => "<unknown>",
+        s => s
     };
 
     let mut stdout = io::stdout();
 
     try!(stdout.write_str(XML_HEADER));
 
-    let arg = str::from_char(char::from_u32(code).unwrap_or('\uFFFD'));
-    let title = "\u200B" + arg;
+    let arg = char::from_u32(code).unwrap_or('\uFFFD').to_string();
+    let title = format!("\u200B{}", arg);
     let subtitle = format!("U+{:04X} {}", code, name);
 
     let item = alfred::Item {
@@ -78,25 +76,28 @@ fn handleCodepoint(code: u32) -> io::IoResult<bool> {
 }
 
 /// Prints out the XML for the sequence of characters.
-fn handleText(text: &str) -> io::IoResult<()> {
+fn handle_text(text: &str) -> io::IoResult<()> {
     let mut stdout = io::stdout();
 
     try!(stdout.write_str(XML_HEADER));
 
     for c in text.chars() {
         let name = match icu::u_charName(c as u32, icu::U_EXTENDED_CHAR_NAME) {
-            Ok(~"") => ~"<unknown>",
-            Ok(name) => name,
+            Ok(s) => s,
             Err(e) => {
                 let _ = writeln!(&mut io::stderr(), "u_charName error: {}", e);
                 continue;
             }
         };
+        let name = match name[] {
+            "" => "<unknown>",
+            s => s
+        };
         let item = alfred::Item {
             arg: Some(format!("U+{:04X} {}", c as u32, name).into_maybe_owned()),
             subtitle: Some(format!("U+{:04X}", c as u32).into_maybe_owned()),
             icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
-            ..alfred::Item::new(name)
+            ..alfred::Item::new(name.to_string())
         };
         try!(item.write_xml(&mut stdout, 1));
     }
