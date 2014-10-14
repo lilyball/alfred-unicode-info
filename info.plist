@@ -32,14 +32,13 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
 				<string>char</string>
 				<key>script</key>
-				<string>#!/bin/bash
-./unicode "{query}"</string>
+				<string>./unicode "{query}"</string>
 				<key>title</key>
 				<string>Unicode info for {query}</string>
 				<key>type</key>

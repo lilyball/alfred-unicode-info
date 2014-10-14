@@ -9,22 +9,20 @@ use std::io;
 
 mod icu;
 
+static VERSION: &'static str = include_str!("../version");
+
 fn main() {
     let args = os::args();
 
-    if args.len() != 2 {
-        println!("usage: {} text", args[0]);
-        os::set_exit_status(2);
-        return;
-    }
-
-    let text = args[1][];
+    let text = args[].get(1).map(|s| s[]).unwrap_or("");
     let _ = handle_arg(text);
 }
 
 /// Handles the given arg
 fn handle_arg(text: &str) -> io::IoResult<()> {
-    if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
+    if text.is_empty() {
+        return handle_placeholder();
+    } else if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
         let digits = text.slice_from(2);
         match num::from_str_radix::<u32>(digits, 16) {
             None => (),
@@ -101,4 +99,14 @@ fn handle_text(text: &str) -> io::IoResult<()> {
     let mut stdout = try!(xmlw.close());
     try!(stdout.flush());
     Ok(())
+}
+
+/// Prints the placeholder item
+fn handle_placeholder() -> io::IoResult<()> {
+    let item = alfred::Item {
+        subtitle: Some(format!("version {}", VERSION).into_maybe_owned()),
+        valid: false,
+        ..alfred::Item::new("Unicode info for …")
+    };
+    alfred::write_items(io::stdout(), [item])
 }

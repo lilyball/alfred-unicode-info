@@ -10,4 +10,9 @@ target/release/unicode:
 
 clean:
 	cargo clean
+	-rm -f version
 .PHONY: clean
+
+version:
+	printf "%s (%s)\n" "$$(git describe --always --dirty)" "$$(date +'%F %T %z')" > $@
+.PHONY: version
