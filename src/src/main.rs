@@ -54,9 +54,7 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
         s => s
     };
 
-    let mut stdout = io::stdout();
-
-    try!(stdout.write_str(XML_HEADER));
+    let mut xmlw = try!(alfred::XMLWriter::new(io::stdout()));
 
     let arg = char::from_u32(code).unwrap_or('\uFFFD').to_string();
     let title = format!("\u200B{}", arg);
@@ -68,18 +66,16 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
         icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
         ..alfred::Item::new(title)
     };
-    try!(item.write_xml(&mut stdout, 1));
+    try!(xmlw.write_item(&item));
 
-    try!(stdout.write_str(XML_FOOTER));
+    let mut stdout = try!(xmlw.close());
     try!(stdout.flush());
     Ok(true)
 }
 
 /// Prints out the XML for the sequence of characters.
 fn handle_text(text: &str) -> io::IoResult<()> {
-    let mut stdout = io::stdout();
-
-    try!(stdout.write_str(XML_HEADER));
+    let mut xmlw = try!(alfred::XMLWriter::new(io::stdout()));
 
     for c in text.chars() {
         let name = match icu::u_charName(c as u32, icu::U_EXTENDED_CHAR_NAME) {
@@ -99,13 +95,10 @@ fn handle_text(text: &str) -> io::IoResult<()> {
             icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
             ..alfred::Item::new(name)
         };
-        try!(item.write_xml(&mut stdout, 1));
+        try!(xmlw.write_item(&item));
     }
 
-    try!(stdout.write_str(XML_FOOTER));
+    let mut stdout = try!(xmlw.close());
     try!(stdout.flush());
     Ok(())
 }
-
-static XML_HEADER: &'static str = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<items>\n";
-static XML_FOOTER: &'static str = "</items>\n";
