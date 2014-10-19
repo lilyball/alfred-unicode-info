@@ -103,7 +103,7 @@ fn handle_text(text: &str) -> io::IoResult<()> {
 fn handle_placeholder() -> io::IoResult<()> {
     let item = alfred::ItemBuilder::new("Unicode info for …")
                                    .subtitle(format!("version {}", VERSION))
-                                   .invalid()
+                                   .valid(false)
                                    .into_item();
     alfred::write_items(io::stdout(), [item])
 }
