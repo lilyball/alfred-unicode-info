@@ -58,12 +58,11 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
     let title = format!("\u200B{}", arg);
     let subtitle = format!("U+{:04X} {}", code, name);
 
-    let item = alfred::Item {
-        arg: Some(arg.into_maybe_owned()),
-        subtitle: Some(subtitle.into_maybe_owned()),
-        icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
-        ..alfred::Item::new(title)
-    };
+    let item = alfred::ItemBuilder::new(title)
+                                   .arg(arg)
+                                   .subtitle(subtitle)
+                                   .icon_path("icon.png")
+                                   .into_item();
     try!(xmlw.write_item(&item));
 
     let mut stdout = try!(xmlw.close());
@@ -87,12 +86,11 @@ fn handle_text(text: &str) -> io::IoResult<()> {
             "" => "<unknown>",
             s => s
         };
-        let item = alfred::Item {
-            arg: Some(format!("U+{:04X} {}", c as u32, name).into_maybe_owned()),
-            subtitle: Some(format!("U+{:04X}", c as u32).into_maybe_owned()),
-            icon: Some(alfred::PathIcon("icon.png".into_maybe_owned())),
-            ..alfred::Item::new(name)
-        };
+        let item = alfred::ItemBuilder::new(name)
+                                       .arg(format!("U+{:04X} {}", c as u32, name))
+                                       .subtitle(format!("U+{:04X}", c as u32))
+                                       .icon_path("icon.png")
+                                       .into_item();
         try!(xmlw.write_item(&item));
     }
 
@@ -103,10 +101,9 @@ fn handle_text(text: &str) -> io::IoResult<()> {
 
 /// Prints the placeholder item
 fn handle_placeholder() -> io::IoResult<()> {
-    let item = alfred::Item {
-        subtitle: Some(format!("version {}", VERSION).into_maybe_owned()),
-        valid: false,
-        ..alfred::Item::new("Unicode info for …")
-    };
-    alfred::write_items(io::stdout(), [item])
+    let item = alfred::ItemBuilder::new("Unicode info for …")
+                                   .subtitle(format!("version {}", VERSION))
+                                   .invalid()
+                                   .into_item();
+    alfred::write_items(io::stdout(), [&item])
 }
