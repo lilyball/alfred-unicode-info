@@ -105,5 +105,5 @@ fn handle_placeholder() -> io::IoResult<()> {
                                    .subtitle(format!("version {}", VERSION))
                                    .invalid()
                                    .into_item();
-    alfred::write_items(io::stdout(), [&item])
+    alfred::write_items(io::stdout(), [item])
 }
