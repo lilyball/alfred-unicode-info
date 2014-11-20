@@ -2,11 +2,25 @@
 name = "unicode"
 version = "0.0.1"
 dependencies = [
- "alfred 0.0.1 (git+https://github.com/kballard/alfred-rs.git)",
+ "alfred 0.0.1 (git+https://github.com/kballard/alfred-rs)",
+ "time 0.0.2 (git+https://github.com/rust-lang/time)",
 ]
 
 [[package]]
 name = "alfred"
 version = "0.0.1"
-source = "git+https://github.com/kballard/alfred-rs.git#c3bb508694fd2d2a8969cbf6cec444d828b22252"
+source = "git+https://github.com/kballard/alfred-rs#c3bb508694fd2d2a8969cbf6cec444d828b22252"
+
+[[package]]
+name = "gcc"
+version = "0.0.1"
+source = "git+https://github.com/alexcrichton/gcc-rs#f25b3ba9c40303781189cc137fb98fffe5b56de7"
+
+[[package]]
+name = "time"
+version = "0.0.2"
+source = "git+https://github.com/rust-lang/time#b58210c93a44d7b83a1a9b68b462f5a7fa1942f3"
+dependencies = [
+ "gcc 0.0.1 (git+https://github.com/alexcrichton/gcc-rs)",
+]
 
