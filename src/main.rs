@@ -9,7 +9,7 @@ use std::io;
 
 mod icu;
 
-static VERSION: &'static str = include_str!("../version");
+static VERSION: &'static str = include_str!(concat!(env!("OUT_DIR"), "/version"));
 
 fn main() {
     let args = os::args();

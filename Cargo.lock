@@ -1,0 +1,12 @@
+[root]
+name = "unicode"
+version = "0.0.1"
+dependencies = [
+ "alfred 0.0.1 (git+https://github.com/kballard/alfred-rs.git)",
+]
+
+[[package]]
+name = "alfred"
+version = "0.0.1"
+source = "git+https://github.com/kballard/alfred-rs.git#c3bb508694fd2d2a8969cbf6cec444d828b22252"
+
