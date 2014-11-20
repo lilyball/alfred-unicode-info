@@ -1,4 +1,4 @@
-#![feature(slicing_syntax)]
+#![feature(slicing_syntax,globs)]
 
 extern crate alfred;
 
@@ -105,5 +105,5 @@ fn handle_placeholder() -> io::IoResult<()> {
                                    .subtitle(format!("version {}", VERSION))
                                    .valid(false)
                                    .into_item();
-    alfred::write_items(io::stdout(), [item])
+    alfred::write_items(io::stdout(), &[item])
 }

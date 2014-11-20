@@ -5,6 +5,9 @@
 
 extern crate libc;
 
+pub use self::UCharNameChoice::*;
+pub use self::UErrorCode::*;
+
 #[repr(C)]
 pub enum UCharNameChoice {
     U_UNICODE_CHAR_NAME  = 0,
