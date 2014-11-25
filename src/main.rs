@@ -43,7 +43,7 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
     let name = match icu::u_charName(code, icu::U_EXTENDED_CHAR_NAME) {
         Ok(s) => s,
         Err(e) => {
-            let _ = writeln!(io::stderr(), "u_charName error: {}", e);
+            let _ = writeln!(&mut io::stderr(), "u_charName error: {}", e);
             return Ok(false);
         }
     };

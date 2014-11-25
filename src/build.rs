@@ -10,7 +10,7 @@ fn main() {
 
     let dst = Path::new(os::getenv("OUT_DIR").unwrap());
     let mut f = File::create(&dst.join("version")).unwrap();
-    (writeln!(f, "{} ({})", version, timestamp)).unwrap();
+    (writeln!(&mut f, "{} ({})", version, timestamp)).unwrap();
 }
 
 fn git_describe() -> String {
