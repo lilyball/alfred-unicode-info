@@ -16,7 +16,7 @@ pub enum UCharNameChoice {
 }
 
 #[repr(C)]
-#[deriving(PartialEq,Eq,Clone,PartialOrd,Ord,Show)]
+#[deriving(PartialEq,Eq,Clone,Copy,PartialOrd,Ord,Show)]
 pub enum UErrorCode {
    U_USING_FALLBACK_WARNING  = -128,
    //U_ERROR_WARNING_START     = -128,
