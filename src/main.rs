@@ -54,8 +54,8 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
 
     let mut xmlw = try!(alfred::XMLWriter::new(io::stdout()));
 
-    let arg = char::from_u32(code).unwrap_or('\uFFFD').to_string();
-    let title = format!("\u200B{}", arg);
+    let arg = char::from_u32(code).unwrap_or('\u{FFFD}').to_string();
+    let title = format!("\u{200B}{}", arg);
     let subtitle = format!("U+{:04X} {}", code, name);
 
     let item = alfred::ItemBuilder::new(title)
