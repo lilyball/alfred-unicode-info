@@ -16,7 +16,7 @@ pub enum UCharNameChoice {
 }
 
 #[repr(C)]
-#[deriving(PartialEq,Eq,Clone,Copy,PartialOrd,Ord,Show)]
+#[derive(PartialEq,Eq,Clone,Copy,PartialOrd,Ord,Show)]
 pub enum UErrorCode {
    U_USING_FALLBACK_WARNING  = -128,
    //U_ERROR_WARNING_START     = -128,
@@ -222,7 +222,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErr
     }
 
     const BUFFER_SIZE: uint = 128;
-    let mut buffer = [0u8, ..BUFFER_SIZE];
+    let mut buffer = [0u8; BUFFER_SIZE];
 
     let mut err = U_ZERO_ERROR;
     let len = unsafe {

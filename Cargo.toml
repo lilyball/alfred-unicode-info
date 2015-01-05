@@ -7,7 +7,7 @@ build = "src/build.rs"
 
 [dependencies]
 
-alfred = "~0.0.1"
+alfred = "0.0.3"
 
 [build-dependencies.time]
 git = "https://github.com/rust-lang/time"
