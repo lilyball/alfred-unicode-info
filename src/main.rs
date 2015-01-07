@@ -1,5 +1,3 @@
-#![feature(slicing_syntax)]
-
 extern crate alfred;
 
 use std::char;
@@ -14,7 +12,7 @@ static VERSION: &'static str = include_str!(concat!(env!("OUT_DIR"), "/version")
 fn main() {
     let args = os::args();
 
-    let text = args[].get(1).map(|s| s[]).unwrap_or("");
+    let text = args.get(1).map(|s| &**s).unwrap_or("");
     let _ = handle_arg(text);
 }
 
@@ -47,7 +45,7 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
             return Ok(false);
         }
     };
-    let name = match name[] {
+    let name = match &*name {
         "" => "<unknown>",
         s => s
     };
@@ -82,7 +80,7 @@ fn handle_text(text: &str) -> io::IoResult<()> {
                 continue;
             }
         };
-        let name = match name[] {
+        let name = match &*name {
             "" => "<unknown>",
             s => s
         };
