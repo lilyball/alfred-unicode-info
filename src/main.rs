@@ -1,4 +1,4 @@
-#![feature(slicing_syntax,globs)]
+#![feature(slicing_syntax)]
 
 extern crate alfred;
 
