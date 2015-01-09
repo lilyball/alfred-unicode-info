@@ -202,12 +202,12 @@ pub enum UErrorCode {
 
 #[inline]
 pub fn U_SUCCESS(err: UErrorCode) -> bool {
-    err as int <= U_ZERO_ERROR as int
+    err as isize <= U_ZERO_ERROR as isize
 }
 
 #[inline]
 pub fn U_FAILURE(err: UErrorCode) -> bool {
-    err as int > U_ZERO_ERROR as int
+    err as isize > U_ZERO_ERROR as isize
 }
 
 /// Converts the indicated codepoint into a string, or returns an error.
@@ -221,7 +221,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErr
         return Err(U_INVALID_CHAR_FOUND);
     }
 
-    const BUFFER_SIZE: uint = 128;
+    const BUFFER_SIZE: usize = 128;
     let mut buffer = [0u8; BUFFER_SIZE];
 
     let mut err = U_ZERO_ERROR;
@@ -232,7 +232,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErr
 
     if U_SUCCESS(err) {
         assert!(len >= 0);
-        let name = buffer.slice_to(len as uint);
+        let name = buffer.slice_to(len as usize);
         Ok(String::from_utf8_lossy(name).into_owned())
     } else {
         assert!(err != U_BUFFER_OVERFLOW_ERROR, "u_charName buffer is too small");
