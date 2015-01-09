@@ -1,3 +1,5 @@
+#![allow(unstable)]
+
 use std::io::{Command,File};
 use std::io::process::{InheritFd,Ignored,ProcessOutput};
 use std::os;
