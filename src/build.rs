@@ -34,7 +34,7 @@ fn timestamp() -> String {
 }
 
 fn run(cmd: &mut Command) -> ProcessOutput {
-    println!("running {}", cmd);
+    println!("running {:?}", cmd);
     cmd.stdin(Ignored).stderr(InheritFd(2)).output().unwrap()
 }
 

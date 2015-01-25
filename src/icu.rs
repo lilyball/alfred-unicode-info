@@ -232,7 +232,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErr
 
     if U_SUCCESS(err) {
         assert!(len >= 0);
-        let name = buffer.slice_to(len as usize);
+        let name = &buffer[..len as usize];
         Ok(String::from_utf8_lossy(name).into_owned())
     } else {
         assert!(err != U_BUFFER_OVERFLOW_ERROR, "u_charName buffer is too small");

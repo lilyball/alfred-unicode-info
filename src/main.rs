@@ -23,7 +23,7 @@ fn handle_arg(text: &str) -> io::IoResult<()> {
     if text.is_empty() {
         return handle_placeholder();
     } else if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
-        let digits = text.slice_from(2);
+        let digits = &text[2..];
         match num::from_str_radix::<u32>(digits, 16) {
             None => (),
             Some(code) => {
