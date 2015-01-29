@@ -5,7 +5,7 @@ extern crate alfred;
 use std::char;
 use std::os;
 use std::num;
-use std::io;
+use std::old_io as io;
 
 mod icu;
 

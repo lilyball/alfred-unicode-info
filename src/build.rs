@@ -1,7 +1,7 @@
 #![allow(unstable)]
 
-use std::io::{Command,File};
-use std::io::process::{InheritFd,Ignored,ProcessOutput};
+use std::old_io::{Command,File};
+use std::old_io::process::{InheritFd,Ignored,ProcessOutput};
 use std::os;
 
 fn main() {
