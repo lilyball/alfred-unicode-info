@@ -1,4 +1,4 @@
-#![allow(unstable)]
+#![feature(os,core,io,collections,libc)]
 
 extern crate alfred;
 

@@ -1,4 +1,4 @@
-#![allow(unstable)]
+#![feature(io,os,path)]
 
 use std::old_io::{Command,File};
 use std::old_io::process::{InheritFd,Ignored,ProcessOutput};
