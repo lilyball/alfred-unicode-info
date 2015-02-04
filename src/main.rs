@@ -1,4 +1,4 @@
-#![feature(os,core,io,collections,libc)]
+#![feature(os,core,io,libc)]
 
 extern crate alfred;
 
@@ -24,13 +24,10 @@ fn handle_arg(text: &str) -> io::IoResult<()> {
         return handle_placeholder();
     } else if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
         let digits = &text[2..];
-        match num::from_str_radix::<u32>(digits, 16) {
-            None => (),
-            Some(code) => {
-                // this is a U+#### codepoint
-                if try!(handle_codepoint(code)) {
-                    return Ok(());
-                }
+        if let Ok(code) = num::from_str_radix::<u32>(digits, 16) {
+            // this is a U+#### codepoint
+            if try!(handle_codepoint(code)) {
+                return Ok(());
             }
         }
     }
