@@ -1,9 +1,9 @@
-#![feature(os,core,io,libc)]
+#![feature(env,core,io,libc,os)]
 
 extern crate alfred;
 
 use std::char;
-use std::os;
+use std::env;
 use std::num;
 use std::old_io as io;
 
@@ -12,10 +12,12 @@ mod icu;
 static VERSION: &'static str = include_str!(concat!(env!("OUT_DIR"), "/version"));
 
 fn main() {
-    let args = os::args();
-
-    let text = args.get(1).map(|s| &**s).unwrap_or("");
-    let _ = handle_arg(text);
+    let arg = env::args().skip(1).next();
+    let arg = arg.as_ref().map(|oss| oss.to_string_lossy());
+    let text = arg.as_ref().map_or("", |oss| &**oss);
+    if let Err(err) = handle_arg(text) {
+        let _ = writeln!(&mut io::stderr(), "error: {}", err);
+    }
 }
 
 /// Handles the given arg

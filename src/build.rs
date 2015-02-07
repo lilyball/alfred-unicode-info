@@ -1,14 +1,15 @@
-#![feature(io,os,path)]
+#![feature(io,env,path,std_misc)]
 
 use std::old_io::{Command,File};
 use std::old_io::process::{InheritFd,Ignored,ProcessOutput};
-use std::os;
+use std::env;
+use std::os::unix::OsStringExt;
 
 fn main() {
     let version = git_describe();
     let timestamp = timestamp();
 
-    let dst = Path::new(os::getenv("OUT_DIR").expect("Missing environment variable OUT_DIR"));
+    let dst = Path::new(env::var("OUT_DIR").expect("Missing environment variable OUT_DIR").into_vec());
     let mut f = File::create(&dst.join("version")).unwrap();
     (writeln!(&mut f, "{} ({})", version, timestamp)).unwrap();
 }
