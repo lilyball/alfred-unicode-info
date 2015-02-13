@@ -12,7 +12,7 @@ mod icu;
 static VERSION: &'static str = include_str!(concat!(env!("OUT_DIR"), "/version"));
 
 fn main() {
-    let arg = env::args().skip(1).next();
+    let arg = env::args_os().skip(1).next();
     let arg = arg.as_ref().map(|oss| oss.to_string_lossy());
     let text = arg.as_ref().map_or("", |oss| &**oss);
     if let Err(err) = handle_arg(text) {

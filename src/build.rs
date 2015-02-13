@@ -9,7 +9,7 @@ fn main() {
     let version = git_describe();
     let timestamp = timestamp();
 
-    let dst = Path::new(env::var("OUT_DIR").expect("Missing environment variable OUT_DIR").into_vec());
+    let dst = Path::new(env::var_os("OUT_DIR").expect("Missing environment variable OUT_DIR").into_vec());
     let mut f = File::create(&dst.join("version")).unwrap();
     (writeln!(&mut f, "{} ({})", version, timestamp)).unwrap();
 }
