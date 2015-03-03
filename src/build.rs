@@ -1,4 +1,4 @@
-#![feature(fs,io,env,os,path,process,std_misc)]
+#![feature(fs,io,os,path,process,std_misc)]
 
 use std::env;
 use std::ffi::OsString;
