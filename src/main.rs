@@ -1,11 +1,12 @@
-#![feature(core,old_io,libc)]
+#![feature(core,io,libc)]
 
 extern crate alfred;
 
 use std::char;
 use std::env;
 use std::num;
-use std::old_io as io;
+use std::io;
+use std::io::prelude::*;
 
 mod icu;
 
@@ -21,7 +22,7 @@ fn main() {
 }
 
 /// Handles the given arg
-fn handle_arg(text: &str) -> io::IoResult<()> {
+fn handle_arg(text: &str) -> io::Result<()> {
     if text.is_empty() {
         return handle_placeholder();
     } else if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
@@ -38,7 +39,7 @@ fn handle_arg(text: &str) -> io::IoResult<()> {
 
 /// Prints out the XML for the given codepoint, if valid.
 /// Returns `Ok(true)` if the codepoint is valid, `Ok(false)` if not.
-fn handle_codepoint(code: u32) -> io::IoResult<bool> {
+fn handle_codepoint(code: u32) -> io::Result<bool> {
     let name = match icu::u_charName(code, icu::U_EXTENDED_CHAR_NAME) {
         Ok(s) => s,
         Err(e) => {
@@ -70,7 +71,7 @@ fn handle_codepoint(code: u32) -> io::IoResult<bool> {
 }
 
 /// Prints out the XML for the sequence of characters.
-fn handle_text(text: &str) -> io::IoResult<()> {
+fn handle_text(text: &str) -> io::Result<()> {
     let mut xmlw = try!(alfred::XMLWriter::new(io::stdout()));
 
     for c in text.chars() {
@@ -99,7 +100,7 @@ fn handle_text(text: &str) -> io::IoResult<()> {
 }
 
 /// Prints the placeholder item
-fn handle_placeholder() -> io::IoResult<()> {
+fn handle_placeholder() -> io::Result<()> {
     let item = alfred::ItemBuilder::new("Unicode info for …")
                                    .subtitle(format!("version {}", VERSION))
                                    .valid(false)

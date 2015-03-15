@@ -2,11 +2,11 @@
 name = "unicode"
 version = "0.0.1"
 dependencies = [
- "alfred 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "alfred 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "alfred"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
