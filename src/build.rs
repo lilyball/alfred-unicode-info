@@ -1,5 +1,3 @@
-#![feature(std_misc)]
-
 use std::env;
 use std::ffi::OsString;
 use std::fs::File;

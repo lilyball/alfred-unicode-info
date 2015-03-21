@@ -1,4 +1,4 @@
-#![feature(core,io,libc)]
+#![feature(core,libc)]
 
 extern crate alfred;
 
