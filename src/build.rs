@@ -1,3 +1,5 @@
+#![feature(convert)]
+
 use std::env;
 use std::ffi::OsString;
 use std::fs::File;
@@ -11,7 +13,7 @@ fn main() {
     let timestamp = timestamp();
 
     let out_dir = env::var_os("OUT_DIR").expect("Missing environment variable OUT_DIR").into_vec();
-    let mut dst = PathBuf::new(&<OsString as OsStringExt>::from_vec(out_dir));
+    let mut dst = PathBuf::from(&<OsString as OsStringExt>::from_vec(out_dir));
     dst.push("version");
     let mut f = File::create(&dst).unwrap();
     (writeln!(&mut f, "{} ({})", version, timestamp)).unwrap();
