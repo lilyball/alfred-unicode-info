@@ -1,10 +1,9 @@
-#![feature(core,libc)]
+#![feature(libc)]
 
 extern crate alfred;
 
 use std::char;
 use std::env;
-use std::num;
 use std::io;
 use std::io::prelude::*;
 
@@ -27,7 +26,7 @@ fn handle_arg(text: &str) -> io::Result<()> {
         return handle_placeholder();
     } else if text.starts_with("U+") && text.len() > 2 && text.len() <= 10 {
         let digits = &text[2..];
-        if let Ok(code) = num::from_str_radix::<u32>(digits, 16) {
+        if let Ok(code) = u32::from_str_radix(digits, 16) {
             // this is a U+#### codepoint
             if try!(handle_codepoint(code)) {
                 return Ok(());
