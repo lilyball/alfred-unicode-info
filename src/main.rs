@@ -1,5 +1,3 @@
-#![feature(libc)]
-
 extern crate alfred;
 
 use std::char;
