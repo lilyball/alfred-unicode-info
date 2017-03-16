@@ -1,11 +1,11 @@
 [package]
 
 name = "unicode"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Kevin Ballard <kevin@sb.org>"]
 build = "src/build.rs"
 
 [dependencies]
 
-alfred = "1.0.0"
-libc = "0.1.7"
+alfred = "3.0.0"
+libc = "0.2.21"
