@@ -214,8 +214,8 @@ pub fn U_FAILURE(err: UErrorCode) -> bool {
 /// If the codepoint doesn't exist, Ok("") will be returned.
 ///
 /// The codepoint must be 0 <= code <= 0x10FFFF. If an out-of-range codepoint is passed,
-/// Err(U_INVALID_CHAR_FOUND) will be returned. This is non-standard; libicucore's
-/// u_charName appears to return "" instead.
+/// `Err(U_INVALID_CHAR_FOUND)` will be returned. This is non-standard; libicucore's
+/// `u_charName` appears to return "" instead.
 pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErrorCode> {
     if code > 0x10FFFF {
         return Err(U_INVALID_CHAR_FOUND);
@@ -235,7 +235,7 @@ pub fn u_charName(code: u32, nameChoice: UCharNameChoice) -> Result<String, UErr
         let name = &buffer[..len as usize];
         Ok(String::from_utf8_lossy(name).into_owned())
     } else {
-        assert!(err != U_BUFFER_OVERFLOW_ERROR, "u_charName buffer is too small");
+        assert_ne!(err, U_BUFFER_OVERFLOW_ERROR, "u_charName buffer is too small");
         Err(err)
     }
 }
