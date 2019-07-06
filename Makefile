@@ -9,6 +9,10 @@ install: target/release/unicode
 	./alfred-install-workflow/install-workflow.sh target/release/unicode
 .PHONY: install
 
+update-plist:
+	./alfred-install-workflow/install-workflow.sh --update-plist
+.PHONY: update-plist
+
 clean:
 	cargo clean
 .PHONY: clean
